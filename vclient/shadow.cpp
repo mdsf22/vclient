@@ -328,13 +328,13 @@ void CommandLineParser::Backup(vector<wstring> &volList, vector<wstring> &exclud
 void CommandLineParser::Restore(wstring &meta, wstring &dir, vector<wstring> &filelist)
 {
 	FunctionTracer ft(DBG_INFO);
-	/*
+	
 	if (meta.empty() || dir.empty() || filelist.empty())
 	{
 		ft.WriteLine(L"meta or dir or files not exist");
 		return;
 	}
-	*/
+	
 
 	wstring xmlDoc = ReadFileContents(meta);
 	ft.Trace(DBG_INFO, L"XML document: '%s'", xmlDoc.c_str());
