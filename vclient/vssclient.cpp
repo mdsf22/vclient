@@ -1274,3 +1274,20 @@ void VssClient::SaveAsrXml()
 		}
 	}
 }
+
+void VssClient::SetRestoreOptions()
+{
+	FunctionTracer ft(DBG_INFO);
+	VSS_ID idInstance = GUID_NULL;
+	VSS_ID idWriter = GUID_NULL;
+	wstring asr_writer = L"{be000cbe-11fe-4426-9c58-531aa6355fc4}";
+	idWriter = WString2Guid(asr_writer);
+	CHECK_COM(m_pVssObject->SetRestoreOptions(
+		idWriter,
+		VSS_CT_FILEGROUP,
+		L"ASR",
+		L"ASR",
+		TEXT("\"IncludeDisk\"=\"0\", \"ExcludeDisk\"=\"1\" "))
+	);
+	ft.WriteLine(L"===SetRestoreOptions, SetRestoreOptions ok");
+}

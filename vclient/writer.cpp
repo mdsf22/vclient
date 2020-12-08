@@ -68,6 +68,7 @@ void VssWriter::Initialize(IVssExamineWriterMetadata * pMetadata)
 			if (components_[j].IsAncestorOf(components_[i]))
 				components_[i].isTopLevel_ = false;
 	}
+	/*
 	if (name_ == L"ASR Writer")
 	{
 		for (unsigned i = 0; i < cComponents; i++)
@@ -76,6 +77,7 @@ void VssWriter::Initialize(IVssExamineWriterMetadata * pMetadata)
 				components_[i].isExcluded_ = components_[i].isSelectable_;
 		}
 	}
+	*/
 }
 
 void VssWriter::Print(bool bListDetailedInfo)

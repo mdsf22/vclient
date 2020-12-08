@@ -114,6 +114,7 @@ public:
 
 	void SaveAsrXml();
 
+	void SetRestoreOptions();
 private:
 
 	// Waits for the async operation to finish

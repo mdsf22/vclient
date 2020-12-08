@@ -225,16 +225,16 @@ int CommandLineParser::MainRoutine(vector<wstring> arguments)
 			{
 				if (!(IsVolume(arguments[i]) || IsUNCPath((VSS_PWSZ)arguments[i].c_str())))
 				{
-					volumeList.push_back(GetUniqueVolumeNameForPath(arguments[i], true));
+					//volumeList.push_back(GetUniqueVolumeNameForPath(arguments[i], true));
 					//if(IsGLOBALROOT((VSS_PWSZ)arguments[i].c_str()))
 					//{ 
 					//	volumeList.push_back(arguments[i]);
 					//	continue;
 					//}
-					//ft.WriteLine(L"\nERROR: invalid parameters %s", GetCommandLine());
-					//return 1;
+					ft.WriteLine(L"\nERROR: invalid parameters %s", GetCommandLine());
+					return 1;
 				}
-				//volumeList.push_back(GetUniqueVolumeNameForPath(arguments[i], true));
+				volumeList.push_back(GetUniqueVolumeNameForPath(arguments[i], true));
 			}
 			break;
 			/*
@@ -277,6 +277,7 @@ int CommandLineParser::MainRoutine(vector<wstring> arguments)
 void CommandLineParser::Backup(vector<wstring> &volList, vector<wstring> &excludedWriterList, vector<wstring> &includedWriterList)
 {
 	FunctionTracer ft(DBG_INFO);
+	/*
 	if (isEfi())
 	{
 		//backup efi partiton
@@ -301,7 +302,7 @@ void CommandLineParser::Backup(vector<wstring> &volList, vector<wstring> &exclud
 		}
 
 	}
-
+	*/
 	DWORD dwContext = VSS_CTX_BACKUP;
 	dwContext = UpdateFinalContext(dwContext);
 	m_vssClient.Initialize(dwContext);
@@ -316,7 +317,7 @@ void CommandLineParser::Backup(vector<wstring> &volList, vector<wstring> &exclud
 	if ((dwContext & VSS_VOLSNAP_ATTR_DELAYED_POSTSNAPSHOT) == 0)
 	{
 		// gen raw file
-		m_vssClient.vol2raw();
+		//m_vssClient.vol2raw();
 
 		if ((dwContext & VSS_VOLSNAP_ATTR_NO_WRITERS) == 0)
 			m_vssClient.BackupComplete(true);
@@ -328,18 +329,19 @@ void CommandLineParser::Backup(vector<wstring> &volList, vector<wstring> &exclud
 void CommandLineParser::Restore(wstring &meta, wstring &dir, vector<wstring> &filelist)
 {
 	FunctionTracer ft(DBG_INFO);
-	
+	/*
 	if (meta.empty() || dir.empty() || filelist.empty())
 	{
 		ft.WriteLine(L"meta or dir or files not exist");
 		return;
 	}
-	
+	*/
 
 	wstring xmlDoc = ReadFileContents(meta);
 	ft.Trace(DBG_INFO, L"XML document: '%s'", xmlDoc.c_str());
 
 	m_vssClient.Initialize(VSS_CTX_ALL, xmlDoc, true);
+	m_vssClient.SetRestoreOptions();
 	m_vssClient.PreRestore();
 
 	// copy vol
@@ -381,10 +383,10 @@ void CommandLineParser::Restore(wstring &meta, wstring &dir, vector<wstring> &fi
 	//	ft.WriteLine(L"cmd_chkdsk: %s", cmd_chkdsk.c_str());
 	//	_wsystem(cmd_chkdsk.c_str());
 	//}
-	ft.WriteLine(L"=== set chkdsk OK3");
+	ft.WriteLine(L"=== set chkdsk OK5");
 
 	m_vssClient.Registrykey(filelist);
-	m_vssClient.SetAsrRestoreStatus(true);
+	//m_vssClient.SetAsrRestoreStatus(true);
 	m_vssClient.PostRestore();
 	return;
 
